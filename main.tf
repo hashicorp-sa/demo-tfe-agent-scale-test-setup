@@ -32,6 +32,6 @@ resource "tfe_workspace" "csa" {
 
   vcs_repo {
       identifier = var.repository_name
-      oauth_token_id  = data.tfe_oauth_client.csa.oauth_token_id
+      oauth_token_id  = data.tfe_oauth_client.test.oauth_token_id
   }
 }
