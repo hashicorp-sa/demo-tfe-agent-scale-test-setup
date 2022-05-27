@@ -18,11 +18,6 @@ variable "workspace_count" {
   default = 1600
 }
 
-variable "github_oauth_token" {
-  type        = string
-  description = "The OAuth token (GitHub PAT token)."
-}
-
 variable "tfe_hostname" {
   type        = string
   description = "The hostname of the Terraform Enterprise server."
