@@ -48,6 +48,10 @@ resource "aws_ecs_task_definition" "tfc_agent" {
           {
             name  = "TFC_AGENT_NAME",
             value = "ECS_Fargate"
+          },
+          {
+              name = "TFC_ADDRESS",
+              value = "https://${var.tfe_hostname}"
           }
         ]
         secrets = [
