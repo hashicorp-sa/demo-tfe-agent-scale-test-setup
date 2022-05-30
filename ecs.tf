@@ -171,7 +171,7 @@ resource "aws_vpc" "main" {
 resource "aws_subnet" "tfc_agent" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.ip_cidr_agent_subnet
-  availability_zone = "${var.region}a"
+  availability_zone = "${var.aws_region}a"
 }
 
 resource "aws_security_group" "tfc_agent" {
