@@ -23,8 +23,8 @@ variable "ip_cidr_vpc" {
 }
 
 variable "ip_cidr_agent_subnet" {
-  description = "IP CIDR for tfc-agent subnet"
-  default     = "172.31.16.0/24"
+  description = "IP CIDR for tfc-agent subnet - Make sure you have enough address space for all the container!"
+  default     = "172.31.16.0/23"
 }
 
 variable "workspace_count" {
