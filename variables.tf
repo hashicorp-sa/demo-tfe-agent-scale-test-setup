@@ -1,3 +1,7 @@
+variable "aws_region" {
+  default = "us-west-1"
+}
+
 variable "agent_count" {
   type = number
   default = 300
@@ -11,6 +15,16 @@ variable "agent_cpu" {
 variable "agent_memory" {
   type = number
   default = 1
+}
+
+variable "ip_cidr_vpc" {
+  description = "IP CIDR for VPC"
+  default     = "172.31.0.0/16"
+}
+
+variable "ip_cidr_agent_subnet" {
+  description = "IP CIDR for tfc-agent subnet"
+  default     = "172.31.16.0/24"
 }
 
 variable "workspace_count" {
