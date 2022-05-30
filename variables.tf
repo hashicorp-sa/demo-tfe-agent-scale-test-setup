@@ -9,12 +9,12 @@ variable "agent_count" {
 
 variable "agent_cpu" {
   type = number
-  default = 1
+  default = 1024
 }
 
 variable "agent_memory" {
   type = number
-  default = 1
+  default = 2048
 }
 
 variable "ip_cidr_vpc" {
