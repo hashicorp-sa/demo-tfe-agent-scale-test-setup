@@ -11,6 +11,7 @@ resource "tfe_workspace" "csa" {
   queue_all_runs = false
   agent_pool_id  = tfe_agent_pool.test-agent-pool.id
   execution_mode = "agent"
+  auto_apply = true
 }
 
 resource "tfe_agent_pool" "test-agent-pool" {
