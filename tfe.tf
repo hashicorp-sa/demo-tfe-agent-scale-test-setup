@@ -16,7 +16,7 @@ resource "tfe_workspace" "csa" {
 
 resource "tfe_agent_pool" "test-agent-pool" {
   count        = var.pool_count
-  name         = "${var.prefix}-${format("%02d" ,count.index + 1)}"
+  name         = "${var.prefix}-${format("%04d" ,count.index + 1)}"
   organization = tfe_organization.test.id
 }
 
