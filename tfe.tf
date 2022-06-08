@@ -9,7 +9,7 @@ resource "tfe_workspace" "csa" {
   description  = "${var.prefix}-${format("%04d" ,count.index + 1)}"
   organization = tfe_organization.test.name
   queue_all_runs = false
-  agent_pool_id  = tfe_agent_pool.test-agent-pool.id
+  agent_pool_id  = tfe_agent_pool.test-agent-pool[count.index % var.pool_count].id
   execution_mode = "agent"
   auto_apply = true
 }

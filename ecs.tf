@@ -7,7 +7,7 @@ resource "aws_ecs_service" "tfc_agent" {
   name            = "${var.prefix}-${count.index + 1}"
   cluster         = aws_ecs_cluster.tfc_agent.id
   launch_type     = "FARGATE"
-  task_definition = aws_ecs_task_definition.tfc_agent.arn[count.index]
+  task_definition = aws_ecs_task_definition.tfc_agent[count.index].arn
   desired_count   = var.agent_per_pool_count
   network_configuration {
     security_groups  = [aws_security_group.tfc_agent.id]
