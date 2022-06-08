@@ -2,9 +2,14 @@ variable "aws_region" {
   default = "us-west-1"
 }
 
-variable "agent_count" {
+variable "pool_count" {
   type = number
-  default = 300
+  default = 16
+}
+
+variable "agent_per_pool_count" {
+  type = number
+  default = 50
 }
 
 variable "agent_cpu" {

@@ -3,11 +3,12 @@ resource "aws_ecs_cluster" "tfc_agent" {
 }
 
 resource "aws_ecs_service" "tfc_agent" {
-  name            = "${var.prefix}-service"
+  count           = var.pool_count
+  name            = "${var.prefix}-${count.index + 1}"
   cluster         = aws_ecs_cluster.tfc_agent.id
   launch_type     = "FARGATE"
-  task_definition = aws_ecs_task_definition.tfc_agent.arn
-  desired_count   = var.agent_count
+  task_definition = aws_ecs_task_definition.tfc_agent.arn[count.index]
+  desired_count   = var.agent_per_pool_count
   network_configuration {
     security_groups  = [aws_security_group.tfc_agent.id]
     subnets          = [aws_subnet.tfc_agent.id]
@@ -16,6 +17,7 @@ resource "aws_ecs_service" "tfc_agent" {
 }
 
 resource "aws_ecs_task_definition" "tfc_agent" {
+  count                    = var.pool_count
   family                   = "${var.prefix}-task"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
@@ -26,7 +28,7 @@ resource "aws_ecs_task_definition" "tfc_agent" {
   container_definitions = jsonencode(
     [
       {
-        name : "tfc-agent"
+        name : "${var.prefix}-${count.index + 1}"
         image : "hashicorp/tfc-agent:latest"
         essential : true
         cpu : var.agent_cpu
@@ -47,7 +49,7 @@ resource "aws_ecs_task_definition" "tfc_agent" {
           },
           {
             name  = "TFC_AGENT_NAME",
-            value = "ECS_Fargate"
+            value = "${var.prefix}-${count.index + 1}"
           },
           {
             name  = "TFC_AGENT_LOG_LEVEL",
@@ -61,7 +63,7 @@ resource "aws_ecs_task_definition" "tfc_agent" {
         secrets = [
           {
             name      = "TFC_AGENT_TOKEN",
-            valueFrom = aws_ssm_parameter.agent_token.arn
+            valueFrom = aws_ssm_parameter.agent_token[count.index].arn
           }
         ]
       }
@@ -70,10 +72,11 @@ resource "aws_ecs_task_definition" "tfc_agent" {
 }
 
 resource "aws_ssm_parameter" "agent_token" {
+  count       = var.pool_count
   name        = "${var.prefix}-tfc-agent-token"
-  description = "Terraform Cloud agent token"
+  description = "Terraform Cloud agent token ${count.index + 1}"
   type        = "SecureString"
-  value       = tfe_agent_token.test-agent-token.token
+  value       = tfe_agent_token.test-agent-token[count.index].token
 }
 
 # task execution role for agent init
@@ -97,7 +100,7 @@ data "aws_iam_policy_document" "agent_init_policy" {
   statement {
     effect    = "Allow"
     actions   = ["ssm:GetParameters"]
-    resources = [aws_ssm_parameter.agent_token.arn]
+    resources = aws_ssm_parameter.agent_token.*.arn
   }
   statement {
     effect    = "Allow"

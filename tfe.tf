@@ -15,11 +15,13 @@ resource "tfe_workspace" "csa" {
 }
 
 resource "tfe_agent_pool" "test-agent-pool" {
-  name         = var.prefix
+  count        = var.pool_count
+  name         = "${var.prefix}-${count.index + 1}"
   organization = tfe_organization.test.id
 }
 
 resource "tfe_agent_token" "test-agent-token" {
-  agent_pool_id = tfe_agent_pool.test-agent-pool.id
-  description   = var.prefix
+  count        = var.pool_count
+  agent_pool_id = tfe_agent_pool.test-agent-pool[count.index].id
+  description   = "${var.prefix}-${count.index + 1}"
 }
