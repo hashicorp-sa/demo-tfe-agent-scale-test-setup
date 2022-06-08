@@ -1,6 +1,6 @@
 ## Description
 
-{This section contains a description of this repository and what it's purpose is}
+{This section contains a description of this repository and what it's purpose is} 
 
 ## Getting Started & Documentation
 
