@@ -50,6 +50,10 @@ resource "aws_ecs_task_definition" "tfc_agent" {
             value = "ECS_Fargate"
           },
           {
+            name  = "TFC_AGENT_LOG_LEVEL",
+            value = "debug"
+          },
+          {
               name = "TFC_ADDRESS",
               value = "https://${var.tfe_hostname}"
           }
