@@ -18,7 +18,7 @@ resource "aws_ecs_service" "tfc_agent" {
 
 resource "aws_ecs_task_definition" "tfc_agent" {
   count                    = var.pool_count
-  family                   = "${var.prefix}-task"
+  family                   = "${var.prefix}-${count.index + 1}"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   execution_role_arn       = aws_iam_role.agent_init.arn
