@@ -4,7 +4,7 @@ resource "aws_ecs_cluster" "tfc_agent" {
 
 resource "aws_ecs_service" "tfc_agent" {
   count           = var.pool_count
-  name            = "${var.prefix}-${count.index + 1}"
+  name            = "${var.prefix}-${format("%04d", count.index + 1)}"
   cluster         = aws_ecs_cluster.tfc_agent.id
   launch_type     = "FARGATE"
   task_definition = aws_ecs_task_definition.tfc_agent[count.index].arn
@@ -18,7 +18,7 @@ resource "aws_ecs_service" "tfc_agent" {
 
 resource "aws_ecs_task_definition" "tfc_agent" {
   count                    = var.pool_count
-  family                   = "${var.prefix}-${count.index + 1}"
+  family                   = "${var.prefix}-${format("%04d", count.index + 1)}"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   execution_role_arn       = aws_iam_role.agent_init.arn
@@ -28,7 +28,7 @@ resource "aws_ecs_task_definition" "tfc_agent" {
   container_definitions = jsonencode(
     [
       {
-        name : "${var.prefix}-${count.index + 1}"
+        name : "${var.prefix}-${format("%04d", count.index + 1)}"
         image : "hashicorp/tfc-agent:latest"
         essential : true
         cpu : var.agent_cpu
@@ -49,7 +49,7 @@ resource "aws_ecs_task_definition" "tfc_agent" {
           },
           {
             name  = "TFC_AGENT_NAME",
-            value = "${var.prefix}-${count.index + 1}"
+            value = "${var.prefix}-${format("%04d", count.index + 1)}"
           },
           {
             name  = "TFC_AGENT_LOG_LEVEL",
@@ -73,8 +73,8 @@ resource "aws_ecs_task_definition" "tfc_agent" {
 
 resource "aws_ssm_parameter" "agent_token" {
   count       = var.pool_count
-  name        = "${var.prefix}-${count.index + 1}"
-  description = "Terraform Cloud agent token ${count.index + 1}"
+  name        = "${var.prefix}-${format("%04d", count.index + 1)}"
+  description = "Terraform Cloud agent token ${format("%04d", count.index + 1)}"
   type        = "SecureString"
   value       = tfe_agent_token.test-agent-token[count.index].token
 }
