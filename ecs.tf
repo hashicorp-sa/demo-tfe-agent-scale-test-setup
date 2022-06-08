@@ -73,7 +73,7 @@ resource "aws_ecs_task_definition" "tfc_agent" {
 
 resource "aws_ssm_parameter" "agent_token" {
   count       = var.pool_count
-  name        = "${var.prefix}-tfc-agent-token"
+  name        = "${var.prefix}-${count.index + 1}"
   description = "Terraform Cloud agent token ${count.index + 1}"
   type        = "SecureString"
   value       = tfe_agent_token.test-agent-token[count.index].token
