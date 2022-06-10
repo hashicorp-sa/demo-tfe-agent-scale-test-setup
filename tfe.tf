@@ -3,7 +3,7 @@ resource "tfe_organization" "test" {
   email = var.organization_owner
 }
 
-resource "tfe_workspace" "csa" {
+resource "tfe_workspace" "test" {
   count          = var.workspace_count
   name           = "${var.prefix}-${format("%04d", count.index + 1)}"
   description    = "${var.prefix}-${format("%04d", count.index + 1)}"
