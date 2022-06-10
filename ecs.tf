@@ -56,8 +56,8 @@ resource "aws_ecs_task_definition" "tfc_agent" {
             value = "debug"
           },
           {
-              name = "TFC_ADDRESS",
-              value = "https://${var.tfe_hostname}"
+            name  = "TFC_ADDRESS",
+            value = "https://${var.tfe_hostname}"
           }
         ]
         secrets = [
